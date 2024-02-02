@@ -28,6 +28,32 @@
 
 body {
   font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+section {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+section.wrapper-nav-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section.wrapper-nav-page .nav-page {
+  font-size: 40px;
+}
+
+.nav-page + .nav-page {
+  margin-left: 40px;
+}
+
+.nav-page:hover {
+  text-decoration: underline;
 }
 
 .iziToast.fadeInUp.iziToast-theme-light.iziToast-animateInside.iziToast-opened {
