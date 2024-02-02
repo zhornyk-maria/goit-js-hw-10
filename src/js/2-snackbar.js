@@ -24,24 +24,22 @@ form.addEventListener('submit', function(event) {
     promise.then(
         (delay) => {
             iziToast.success({
-                icon: false,
+                iconUrl: '../img/success-icon.png',
                 messageColor: '#fff',
                 position: 'topRight',
-                backgroundColor: '#59A10D',
                 titleColor: '#fff',
-                message: `Fulfilled promise in ${delay}ms`,
+                message: `✅ Fulfilled promise in ${delay}ms`,
                 animateInside: false,
             });
         },
         (delay) => {
             iziToast.error({
-                icon: false,
+                iconUrl: '../img/close-octagon.png',
                 messageColor: '#fff',
                 position: 'topRight',
-                backgroundColor: '#EF4040',
                 animateInside: false,
                 titleColor: '#fff',
-                message: `Rejected promise in ${delay}ms`,
+                message: `❌ Rejected promise in ${delay}ms`,
             });
         }
     );

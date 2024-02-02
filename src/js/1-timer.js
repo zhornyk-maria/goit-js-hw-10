@@ -7,7 +7,7 @@ import "izitoast/dist/css/iziToast.min.css";
 
 
 const dataTimePicker = document.querySelector("#datetime-picker");
-const startBtn = document.querySelector("#start-btn");
+const startBtn = document.querySelector('[data-start]');
 const daysTimer = document.querySelector('[data-days]');
 const hoursTimer = document.querySelector('[data-hours]');
 const minutesTimer = document.querySelector('[data-minutes]');
@@ -20,7 +20,6 @@ const flatpickrInstance = flatpickr(dataTimePicker, {
     time_24hr: true,
     dateFormat: "Y-m-d H:i",
     defaultDate: new Date(),
-    secondsIncrement: 1,
     onClose: function(selectedDates) {
         const selectedDate = selectedDates[0];
         userSelectedDate = selectedDate;
@@ -69,7 +68,7 @@ class Timer {
             const diff = this.targetDate - current;
             const timeObj = this.convertMs(diff);
             this.tick(timeObj);
-        }, 500);
+        }, 1000);
     }
 
     convertMs(ms) {

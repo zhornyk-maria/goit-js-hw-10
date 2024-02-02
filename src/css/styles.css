@@ -66,35 +66,10 @@ section.wrapper-nav-page .nav-page {
   opacity: 1;
 }
 
-div.iziToast.iziToast-theme-light,
-div.iziToast.iziToast-theme-light.iziToast-color-red.iziToast-opened {
-  position: relative;
-}
-
-div.iziToast.iziToast-theme-light::before {
-  position: absolute;
-  top: 25%;
-  left: 20px;
-  content: '';
-  background: url(../img/close-octagon.png) no-repeat -50% -50%;
-  height: 24px;
-  width: 24px;
-}
-
-.iziToast > .iziToast-body div.iziToast-texts {
-  padding-left: 30px;
+div.iziToast.iziToast-theme-light.iziToast-color-red {
+  background-color: #ef4040;
 }
 
 .iziToast.fadeInUp.iziToast-theme-light.iziToast-color-green {
-  position: relative;
-}
-
-.iziToast.fadeInUp.iziToast-theme-light.iziToast-color-green::before {
-  position: absolute;
-  top: 25%;
-  left: 20px;
-  content: '';
-  background: url(../img/success-icon.png) no-repeat -50% -50%;
-  height: 24px;
-  width: 24px;
+  background-color: #59a10d;
 }
