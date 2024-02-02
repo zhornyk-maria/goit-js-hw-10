@@ -1,25 +1,50 @@
 
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
-function createPromise(delay, value, isActive) {
+const form = document.querySelector('.form');
+
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+    const delay = parseInt(formData.get('delay'));
+    const state = formData.get('state');
+
     const promise = new Promise((resolve, reject) => {
         setTimeout(() => {
-        if (isActive) {
-            resolve(value);
-        } else {
-            reject(value);
-        }
+            if (state === 'fulfilled') {
+                resolve(delay);
+            } else {
+                reject(delay);
+            }
         }, delay);
     });
 
-    return promise;
-}
+    promise.then(
+        (delay) => {
+            iziToast.success({
+                icon: false,
+                messageColor: '#fff',
+                position: 'topRight',
+                backgroundColor: '#59A10D',
+                titleColor: '#fff',
+                message: `Fulfilled promise in ${delay}ms`,
+                animateInside: false,
+            });
+        },
+        (delay) => {
+            iziToast.error({
+                icon: false,
+                messageColor: '#fff',
+                position: 'topRight',
+                backgroundColor: '#EF4040',
+                animateInside: false,
+                titleColor: '#fff',
+                message: `Rejected promise in ${delay}ms`,
+            });
+        }
+    );
 
-iziToast.show({
-    title: 'Hey',
-    message: 'What would you like to add?'
+    this.reset();
 });
-
-//`✅ Fulfilled promise in ${delay}ms`;
-//`❌ Rejected promise in ${delay}ms`; 

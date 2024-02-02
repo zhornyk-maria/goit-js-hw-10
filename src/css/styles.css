@@ -4,6 +4,8 @@
   | default @import url()
   |============================
 */
+@import url('./1-timer.css');
+@import url('./2-snackbar.css');
 @import url('./reset.css');
 @import url('./vite-promo.css');
 @import url('./header.css');
@@ -33,97 +35,40 @@ body {
   border-bottom: 2px solid #ffbebe;
 }
 
-.iziToast .iziToast-close {
-  color: #fff;
+.iziToast > button.iziToast-close {
+  background: url(../img/close-icon.png) no-repeat 50% 50%;
+  opacity: 1;
 }
 
-.wrapper-picker {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
+div.iziToast.iziToast-theme-light,
+div.iziToast.iziToast-theme-light.iziToast-color-red.iziToast-opened {
+  position: relative;
 }
 
-.datetime-picker {
-  width: 272px;
-  height: 40px;
-  padding: 8px 16px;
-  color: #2e2f42;
-  font-size: 16px;
-  line-height: 1.5;
-  letter-spacing: 0.04em;
-  box-sizing: border-box;
-  border-radius: 4px;
-  border: 1px solid #808080;
-  background-color: #fff;
-  outline: none;
-  transition: background-color 0.3s ease, color 0.3s ease,
-    border-color 0.3s ease;
+div.iziToast.iziToast-theme-light::before {
+  position: absolute;
+  top: 25%;
+  left: 20px;
+  content: '';
+  background: url(../img/close-octagon.png) no-repeat -50% -50%;
+  height: 24px;
+  width: 24px;
 }
 
-.datetime-picker:hover {
-  border: 1px solid #000;
+.iziToast > .iziToast-body div.iziToast-texts {
+  padding-left: 30px;
 }
 
-.datetime-picker:active {
-  border: 1px solid #4e75ff;
-  color: #fff;
+.iziToast.fadeInUp.iziToast-theme-light.iziToast-color-green {
+  position: relative;
 }
 
-.datetime-picker:disabled {
-  background-color: #fafafa;
-  color: #808080;
-}
-
-.start-btn {
-  border-radius: 8px;
-  background-color: #cfcfcf;
-  border: none;
-  padding: 8px 16px;
-  color: #989898;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: 0.04em;
-  min-width: 75px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.start-btn:hover {
-  background-color: #6c8cff;
-  color: #fff;
-}
-
-.start-btn:active {
-  background-color: #4e75ff;
-}
-
-.start-btn[disabled] {
-  cursor: default;
-  background-color: #cfcfcf;
-  color: #989898;
-}
-
-.timer {
-  display: flex;
-  gap: 24px;
-  margin: 32px 0;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-}
-
-.value {
-  color: #2e2f42;
-  font-size: 40px;
-  line-height: 1.2;
-  letter-spacing: 0.04em;
-}
-
-.label {
-  color: #2e2f42;
-  font-size: 16px;
-  line-height: 1.5;
-  text-transform: uppercase;
+.iziToast.fadeInUp.iziToast-theme-light.iziToast-color-green::before {
+  position: absolute;
+  top: 25%;
+  left: 20px;
+  content: '';
+  background: url(../img/success-icon.png) no-repeat -50% -50%;
+  height: 24px;
+  width: 24px;
 }
