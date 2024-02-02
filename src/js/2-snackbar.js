@@ -24,7 +24,7 @@ form.addEventListener('submit', function(event) {
     promise.then(
         (delay) => {
             iziToast.success({
-                iconUrl: '../img/success-icon.png',
+                iconUrl: './img/success-icon.png',
                 messageColor: '#fff',
                 position: 'topRight',
                 titleColor: '#fff',
@@ -34,7 +34,7 @@ form.addEventListener('submit', function(event) {
         },
         (delay) => {
             iziToast.error({
-                iconUrl: '../img/close-octagon.png',
+                iconUrl: './img/close-octagon.png',
                 messageColor: '#fff',
                 position: 'topRight',
                 animateInside: false,
