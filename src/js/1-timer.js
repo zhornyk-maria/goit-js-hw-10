@@ -23,6 +23,7 @@ const flatpickrInstance = flatpickr(dataTimePicker, {
     onClose: function(selectedDates) {
         const selectedDate = selectedDates[0];
         userSelectedDate = selectedDate;
+        
         if (selectedDate > new Date()) {
             startBtn.disabled = false;
             userSelectedDate = selectedDate;
@@ -50,25 +51,56 @@ function tick({ days, hours, minutes, seconds }) {
     hoursTimer.textContent = `${addLeadingZero(hours)}`;
     minutesTimer.textContent = `${addLeadingZero(minutes)}`;
     secondsTimer.textContent = `${addLeadingZero(seconds)}`;
+
+    if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
+        timer.stop();
+    }
 }
 
 class Timer {
     constructor(tick) {
         this.tick = tick;
         this.isActive = false;
+        this.lastTime = 0;
+        this.intervalId = null;
     }
 
     start(targetDate) {
+        if (!targetDate) {
+            iziToast.error({
+                message: 'Please select a valid date before starting the timer',
+                messageColor: '#fff',
+                position: 'topRight',
+                backgroundColor: '#ef4040',
+                animateInside: false,
+                color: '#fff'
+            });
+            return;
+        }
         if (this.isActive) return;
         this.isActive = true;
         this.targetDate = targetDate;
-        
-        setInterval(() => {
+        this.intervalId = setInterval(() => {
             const current = Date.now();
             const diff = this.targetDate - current;
             const timeObj = this.convertMs(diff);
             this.tick(timeObj);
+            startBtn.disabled = true;
         }, 1000);
+    }
+
+    pause() {
+        if (!this.isActive) return;
+        this.lastTime = Date.now() - this.targetDate + this.lastTime;
+        this.isActive = false;
+        clearInterval(this.intervalId);
+    }
+
+    stop() {
+        if (!this.isActive) return;
+        this.lastTime = 0;
+        this.isActive = false;
+        clearInterval(this.intervalId);
     }
 
     convertMs(ms) {
