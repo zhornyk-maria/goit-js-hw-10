@@ -85,15 +85,8 @@ class Timer {
             const diff = this.targetDate - current;
             const timeObj = this.convertMs(diff);
             this.tick(timeObj);
-            startBtn.disabled = true;
         }, 1000);
-    }
-
-    pause() {
-        if (!this.isActive) return;
-        this.lastTime = Date.now() - this.targetDate + this.lastTime;
-        this.isActive = false;
-        clearInterval(this.intervalId);
+        startBtn.disabled = true; 
     }
 
     stop() {
@@ -101,6 +94,8 @@ class Timer {
         this.lastTime = 0;
         this.isActive = false;
         clearInterval(this.intervalId);
+        
+        tick({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     }
 
     convertMs(ms) {
@@ -126,7 +121,6 @@ class Timer {
 const timer = new Timer(tick);
 
 startBtn.addEventListener('click', () => {
-    startBtn.disabled = true;
     const targetDate = flatpickrInstance.selectedDates[0];
     timer.start(targetDate);
 });
