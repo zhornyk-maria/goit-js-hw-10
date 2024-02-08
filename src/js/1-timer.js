@@ -18,7 +18,6 @@ let userSelectedDate;
 const flatpickrInstance = flatpickr(dataTimePicker, {
     enableTime: true,
     time_24hr: true,
-    dateFormat: "Y-m-d H:i",
     defaultDate: new Date(),
     onClose: function(selectedDates) {
         const selectedDate = selectedDates[0];
@@ -51,10 +50,6 @@ function tick({ days, hours, minutes, seconds }) {
     hoursTimer.textContent = `${addLeadingZero(hours)}`;
     minutesTimer.textContent = `${addLeadingZero(minutes)}`;
     secondsTimer.textContent = `${addLeadingZero(seconds)}`;
-
-    if (days === 0 && hours === 0 && minutes === 0 && seconds === 0) {
-        timer.stop();
-    }
 }
 
 class Timer {
@@ -85,6 +80,9 @@ class Timer {
             const diff = this.targetDate - current;
             const timeObj = this.convertMs(diff);
             this.tick(timeObj);
+            if (timeObj.days === 0 && timeObj.hours === 0 && timeObj.minutes === 0 && timeObj.seconds === 0) {
+                this.stop();
+            }
         }, 1000);
         startBtn.disabled = true; 
     }
@@ -94,7 +92,7 @@ class Timer {
         this.lastTime = 0;
         this.isActive = false;
         clearInterval(this.intervalId);
-        
+        startBtn.disabled = false;
         tick({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     }
 
