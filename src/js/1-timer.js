@@ -52,12 +52,25 @@ function tick({ days, hours, minutes, seconds }) {
     secondsTimer.textContent = `${addLeadingZero(seconds)}`;
 }
 
+function onStart() {
+    
+}
+
 class Timer {
     constructor(tick) {
         this.tick = tick;
         this.isActive = false;
-        this.lastTime = 0;
         this.intervalId = null;
+    }
+
+    onInterval() {
+        const current = Date.now();
+        const diff = this.targetDate - current;
+        const timeObj = this.convertMs(diff);
+        this.tick(timeObj);
+        if (timeObj.days === 0 && timeObj.hours === 0 && timeObj.minutes === 0 && timeObj.seconds === 0) {
+            this.stop();
+        }
     }
 
     start(targetDate) {
@@ -70,29 +83,25 @@ class Timer {
                 animateInside: false,
                 color: '#fff'
             });
-            return;
+            return false;
         }
-        if (this.isActive) return;
+        if (this.isActive) return true;
         this.isActive = true;
         this.targetDate = targetDate;
+        this.onInterval();
         this.intervalId = setInterval(() => {
-            const current = Date.now();
-            const diff = this.targetDate - current;
-            const timeObj = this.convertMs(diff);
-            this.tick(timeObj);
-            if (timeObj.days === 0 && timeObj.hours === 0 && timeObj.minutes === 0 && timeObj.seconds === 0) {
-                this.stop();
-            }
+            this.onInterval();
         }, 1000);
-        startBtn.disabled = true; 
+        
+        return true;
     }
 
     stop() {
         if (!this.isActive) return;
-        this.lastTime = 0;
         this.isActive = false;
         clearInterval(this.intervalId);
         startBtn.disabled = false;
+        flatpickrInstance.input.disabled = false;
         tick({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     }
 
@@ -120,7 +129,12 @@ const timer = new Timer(tick);
 
 startBtn.addEventListener('click', () => {
     const targetDate = flatpickrInstance.selectedDates[0];
-    timer.start(targetDate);
+    const isStarted = timer.start(targetDate);
+
+    if (isStarted) {
+        startBtn.disabled = true;
+        flatpickrInstance.input.disabled = true;
+    }
 });
 
 
