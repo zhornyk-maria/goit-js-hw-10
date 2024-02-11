@@ -13,7 +13,7 @@ const hoursTimer = document.querySelector('[data-hours]');
 const minutesTimer = document.querySelector('[data-minutes]');
 const secondsTimer = document.querySelector('[data-seconds]');
 
-let userSelectedDate;
+let isButtonDisabled = false;
 
 const flatpickrInstance = flatpickr(dataTimePicker, {
     enableTime: true,
@@ -21,22 +21,18 @@ const flatpickrInstance = flatpickr(dataTimePicker, {
     defaultDate: new Date(),
     onClose: function(selectedDates) {
         const selectedDate = selectedDates[0];
-        userSelectedDate = selectedDate;
+
+        if (timer) {
+            timer.stop();
+        }
         
         if (selectedDate > new Date()) {
             startBtn.disabled = false;
-            userSelectedDate = selectedDate;
+            isButtonDisabled = false;
         } else {
-            userSelectedDate = null;
             startBtn.disabled = true;
-            iziToast.show({
-                message: 'Please choose a date in the future',
-                messageColor: '#fff',
-                position: 'topRight',
-                backgroundColor: '#ef4040',
-                animateInside: false,
-                color: '#fff'
-            });
+            isButtonDisabled = true;
+            showError('Please choose a date in the future');
         }
     },
 });
@@ -52,9 +48,17 @@ function tick({ days, hours, minutes, seconds }) {
     secondsTimer.textContent = `${addLeadingZero(seconds)}`;
 }
 
-function onStart() {
-    
+function showError(msg) {
+    iziToast.show({
+        message: msg,
+        messageColor: '#fff',
+        position: 'topRight',
+        backgroundColor: '#ef4040',
+        animateInside: false,
+        color: '#fff'
+    });
 }
+
 
 class Timer {
     constructor(tick) {
@@ -75,16 +79,15 @@ class Timer {
 
     start(targetDate) {
         if (!targetDate) {
-            iziToast.error({
-                message: 'Please select a valid date before starting the timer',
-                messageColor: '#fff',
-                position: 'topRight',
-                backgroundColor: '#ef4040',
-                animateInside: false,
-                color: '#fff'
-            });
+            showError('Please select a valid date before starting the timer');
             return false;
         }
+
+        if (targetDate <= new Date()) {
+            showError('Please choose a date in the future');
+            return false;
+        }
+
         if (this.isActive) return true;
         this.isActive = true;
         this.targetDate = targetDate;
@@ -101,6 +104,7 @@ class Timer {
         this.isActive = false;
         clearInterval(this.intervalId);
         startBtn.disabled = false;
+        isButtonDisabled = false;
         flatpickrInstance.input.disabled = false;
         tick({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     }
@@ -128,20 +132,17 @@ class Timer {
 const timer = new Timer(tick);
 
 startBtn.addEventListener('click', () => {
+    if (isButtonDisabled) {
+        showError('Button is disabled');
+        startBtn.disabled = true;
+        return;
+    }
     const targetDate = flatpickrInstance.selectedDates[0];
     const isStarted = timer.start(targetDate);
 
     if (isStarted) {
         startBtn.disabled = true;
+        isButtonDisabled = true;
         flatpickrInstance.input.disabled = true;
     }
 });
-
-
-
-
-
-//console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-//console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-//console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
-
